@@ -130,11 +130,6 @@ yanti-store/
 
 ---
 
-## 🤝 Kontribusi
-
-Project ini masih beta. Jika menemukan bug atau punya saran fitur, silakan buat [Issue](https://github.com/Satrioz/yanti-store/issues) atau [Pull Request](https://github.com/Satrioz/yanti-store/pulls).
-
----
 
 ---
 
