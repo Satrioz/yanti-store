@@ -1,4 +1,4 @@
-# Yanti Store
+# Yanti Store v 0.1
 
 > **⚠️ Status: Beta** — Aplikasi ini masih dalam tahap pengembangan aktif. Beberapa fitur masih belum tersedia (lihat roadmap di bawah).
 
