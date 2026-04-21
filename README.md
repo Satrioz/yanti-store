@@ -1,6 +1,6 @@
 # 🕌 Yanti Store
 
-> **⚠️ Status: Beta** — Aplikasi ini masih dalam tahap pengembangan aktif. Beberapa fitur belum tersedia (lihat roadmap di bawah).
+> **⚠️ Status: Beta** — Aplikasi ini masih dalam tahap pengembangan aktif. Beberapa fitur masih belum tersedia (lihat roadmap di bawah).
 
 Yanti Store adalah aplikasi toko online fashion muslim dan kosmetik halal milik **Yanti Store, Lampung**. Menampilkan koleksi **Rabbani**, **Nibras**, dan **Wardah** dengan sistem pemesanan langsung via WhatsApp.
 
