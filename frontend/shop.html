@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yanti Store — Semua Produk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo">
+          <div class="navbar__logo-icon">🕌</div>
+          <span class="navbar__logo-text">Yanti Store</span>
+        </a>
+        <ul class="navbar__links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="shop.html?type=fashion">Fashion</a></li>
+          <li><a href="shop.html?type=beauty">Kosmetik</a></li>
+          <li><a href="index.html#tentang">Tentang</a></li>
+        </ul>
+        <div class="navbar__right">
+          <input
+            class="search-input"
+            type="text"
+            id="search-box"
+            placeholder="🔍 Cari produk..."
+            oninput="FilterView.setQuery(this.value)"
+          />
+          <button
+            class="wishlist-nav-btn"
+            onclick="WishlistView.open()"
+            aria-label="Wishlist"
+          >
+            ♡<span class="wishlist-nav-badge hidden" id="wishlist-count"
+              >0</span
+            >
+          </button>
+          <button
+            class="cart-btn"
+            onclick="CartView.open()"
+            aria-label="Keranjang"
+          >
+            🛍️<span class="cart-badge hidden" id="cart-count">0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="shop-header">
+      <div class="shop-header__inner">
+        <h1 class="shop-header__title" id="shop-page-title">Semua Produk</h1>
+        <span class="shop-header__count" id="result-count"></span>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="shop-tabs">
+      <div class="shop-tabs__inner">
+        <button
+          class="shop-tab active"
+          id="tab-semua"
+          onclick="ShopView.setType('semua', this)"
+        >
+          🌟 Semua
+        </button>
+        <button
+          class="shop-tab"
+          id="tab-fashion"
+          onclick="ShopView.setType('fashion', this)"
+        >
+          👗 Fashion
+        </button>
+        <button
+          class="shop-tab"
+          id="tab-beauty"
+          onclick="ShopView.setType('beauty', this)"
+        >
+          💄 Kosmetik
+        </button>
+      </div>
+    </div>
+
+    <!-- FILTER ROW -->
+    <div class="shop-filter-row">
+      <div class="shop-filter-row__inner">
+        <div>
+          <p class="shop-filter-label">📂 Kategori</p>
+          <div class="pills" id="category-pills"></div>
+        </div>
+        <div>
+          <p class="shop-filter-label">🏷️ Brand</p>
+          <div class="pills" id="brand-pills"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SORT BAR -->
+    <div class="sort-filter-bar">
+      <div class="sort-filter-bar__inner">
+        <div class="filter-bar">
+          <span class="filter-bar__label">Filter:</span>
+          <span class="filter-bar__active" id="active-filter-label"
+            >Semua produk</span
+          >
+          <button class="btn-reset" onclick="ShopView.resetFilter()">
+            ✕ Reset
+          </button>
+        </div>
+        <div
+          style="display: flex; align-items: center; gap: 8px; flex-shrink: 0"
+        >
+          <span
+            style="
+              font-size: 0.78rem;
+              color: var(--mid);
+              font-weight: 500;
+              white-space: nowrap;
+            "
+            >Urutkan:</span
+          >
+          <select
+            class="sort-select"
+            id="sort-select"
+            onchange="FilterView.setSort(this.value)"
+          ></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <section class="products-section">
+      <div class="products-section__inner">
+        <div class="product-grid" id="product-grid"></div>
+        <div class="empty-state hidden" id="empty-state">
+          <div class="empty-state__icon">🔍</div>
+          <p class="empty-state__text">Produk tidak ditemukan</p>
+          <p style="font-size: 0.82rem; color: var(--mid); margin-top: 6px">
+            Coba ubah filter atau kata kunci
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p class="footer__brand">🕌 Yanti Store</p>
+      <p>
+        Lampung, Indonesia &nbsp;|&nbsp; WA:
+        <a class="footer__link" href="https://wa.me/6281234567890"
+          >0812-XXXX-XXXX</a
+        >
+      </p>
+      <p class="footer__copy">© 2025 Yanti Store. Semua hak dilindungi.</p>
+    </footer>
+
+    <!-- CART -->
+    <div
+      class="cart-overlay"
+      id="cart-overlay"
+      onclick="CartView.close()"
+    ></div>
+    <aside class="cart-sidebar" id="cart-sidebar">
+      <div class="cart-sidebar__header">
+        <h3 class="cart-sidebar__title">🛍️ Keranjang</h3>
+        <button class="cart-sidebar__close" onclick="CartView.close()">
+          ✕
+        </button>
+      </div>
+      <div id="cart-actions-bar"></div>
+      <div class="cart-sidebar__body" id="cart-items-list"></div>
+      <div class="cart-sidebar__footer hidden" id="cart-footer">
+        <div class="cart-total-row">
+          <span class="cart-total-label">Total Belanja</span>
+          <span class="cart-total-value" id="cart-total">Rp 0</span>
+        </div>
+        <button
+          class="btn-primary btn-primary--full"
+          onclick="OrderView.open()"
+        >
+          Lanjut Pesan ➜
+        </button>
+      </div>
+    </aside>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div id="product-modal">
+      <div id="product-modal-content"></div>
+    </div>
+
+    <!-- ORDER MODAL -->
+    <div class="modal-overlay" id="order-modal" aria-modal="true" role="dialog">
+      <div class="modal-box">
+        <h3 class="modal-box__title">Detail Pesanan</h3>
+        <p class="modal-box__sub">
+          Isi data untuk konfirmasi pesanan via WhatsApp
+        </p>
+        <div class="order-summary" id="order-summary"></div>
+        <div class="form-group">
+          <label class="form-label" for="order-name">Nama Lengkap</label>
+          <input
+            class="form-input"
+            id="order-name"
+            type="text"
+            placeholder="Contoh: Siti Aminah"
+            autocomplete="name"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="order-wa">Nomor WhatsApp</label>
+          <input
+            class="form-input"
+            id="order-wa"
+            type="tel"
+            placeholder="Contoh: 08123456789"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="15"
+            autocomplete="tel"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="order-address"
+            >Alamat Pengiriman</label
+          >
+          <textarea
+            class="form-input"
+            id="order-address"
+            rows="3"
+            placeholder="Jl. Contoh No.1, Kecamatan, Kota"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="order-note">Catatan (opsional)</label>
+          <textarea
+            class="form-input"
+            id="order-note"
+            rows="2"
+            placeholder="Permintaan khusus..."
+          ></textarea>
+        </div>
+        <div class="modal-actions">
+          <button
+            class="btn-primary btn-primary--green btn-primary--full"
+            onclick="OrderView.submit()"
+          >
+            📲 Pesan via WhatsApp
+          </button>
+          <button class="btn-outline" onclick="OrderView.close()">Batal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIRM MODAL -->
+    <div
+      class="modal-overlay"
+      id="confirm-modal"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-box confirm-box">
+        <div class="confirm-icon">🗑️</div>
+        <h3 class="confirm-title" id="confirm-title">Hapus Item?</h3>
+        <p class="confirm-message" id="confirm-message"></p>
+        <div class="confirm-actions">
+          <button
+            class="btn-danger"
+            id="confirm-btn"
+            onclick="ConfirmService.confirm()"
+          >
+            Hapus
+          </button>
+          <button class="btn-outline" onclick="ConfirmService.cancel()">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div
+      class="modal-overlay"
+      id="success-modal"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-box" id="success-modal-content"></div>
+    </div>
+
+    <!-- WISHLIST SIDEBAR -->
+    <div
+      class="cart-overlay"
+      id="wishlist-overlay"
+      onclick="WishlistView.close()"
+    ></div>
+    <aside class="cart-sidebar" id="wishlist-sidebar">
+      <div class="cart-sidebar__header">
+        <h3 class="cart-sidebar__title">❤️ Wishlist</h3>
+        <button class="cart-sidebar__close" onclick="WishlistView.close()">
+          ✕
+        </button>
+      </div>
+      <div class="cart-sidebar__body" id="wishlist-items-list"></div>
+    </aside>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+      <span id="toast-msg"></span>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <button
+      class="back-to-top"
+      id="back-to-top"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+      aria-label="Kembali ke atas"
+    >
+      ↑
+    </button>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="bottom-nav__item">
+        <span class="bottom-nav__icon">🏠</span>
+        <span class="bottom-nav__label">Beranda</span>
+      </a>
+      <a href="shop.html?type=fashion" class="bottom-nav__item" id="bn-fashion">
+        <span class="bottom-nav__icon">👗</span>
+        <span class="bottom-nav__label">Fashion</span>
+      </a>
+      <a href="shop.html?type=beauty" class="bottom-nav__item" id="bn-beauty">
+        <span class="bottom-nav__icon">💄</span>
+        <span class="bottom-nav__label">Kosmetik</span>
+      </a>
+      <button class="bottom-nav__item" onclick="WishlistView.open()">
+        <span class="bottom-nav__icon bottom-nav__icon--wish">
+          ♡<span class="bottom-nav__badge hidden" id="bottom-wishlist-count"
+            >0</span
+          >
+        </span>
+        <span class="bottom-nav__label">Wishlist</span>
+      </button>
+      <button class="bottom-nav__item" onclick="CartView.open()">
+        <span class="bottom-nav__icon bottom-nav__icon--cart">
+          🛍️<span class="bottom-nav__badge hidden" id="bottom-cart-count"
+            >0</span
+          >
+        </span>
+        <span class="bottom-nav__label">Keranjang</span>
+      </button>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="src/config/app.config.js"></script>
+    <script src="src/constants/app.constants.js"></script>
+    <script src="src/models/models.js"></script>
+    <script src="src/repositories/product.repository.js"></script>
+    <script src="src/services/product.service.js"></script>
+    <script src="src/services/cart.service.js"></script>
+    <script src="src/services/order.service.js"></script>
+    <script src="src/services/wishlist.service.js"></script>
+    <script src="src/services/confirm.service.js"></script>
+    <script src="src/utils/ui.utils.js"></script>
+    <script src="src/ui/components/components.js"></script>
+    <script src="src/ui/views/views.js"></script>
+    <script src="src/ui/views/shop.view.js"></script>
+    <script src="src/shop.js"></script>
+  </body>
+</html>

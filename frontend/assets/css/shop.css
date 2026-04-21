@@ -1,0 +1,111 @@
+/* ============================================
+   Yanti Store — Shop Page Styles
+   ============================================ */
+
+/* ── Page Header ──────────────────────────── */
+.shop-header {
+  background: var(--white);
+  padding: 16px 16px 0;
+  border-bottom: 1px solid #f0e8f5;
+}
+
+.shop-header__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.shop-header__back {
+  font-size: 0.82rem;
+  color: var(--mid);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+
+.shop-header__back:hover {
+  color: var(--accent);
+}
+
+.shop-header__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.shop-header__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  font-family: var(--font-display);
+}
+
+.shop-header__count {
+  font-size: 0.82rem;
+  color: var(--mid);
+}
+
+/* ── Tabs ─────────────────────────────────── */
+.shop-tabs {
+  background: var(--white);
+  border-bottom: 1px solid #f0e8f5;
+  position: sticky;
+  top: 60px;
+  z-index: 50;
+}
+
+.shop-tabs__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  display: flex;
+  padding: 0 16px;
+  gap: 4px;
+}
+
+.shop-tab {
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--mid);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+.shop-tab:hover {
+  color: var(--accent);
+}
+
+.shop-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Filter Row ───────────────────────────── */
+.shop-filter-row {
+  background: var(--white);
+  padding: 16px 16px 20px;
+  border-bottom: 1px solid #f0e8f5;
+}
+
+.shop-filter-row__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.shop-filter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mid);
+  margin-bottom: 8px;
+}

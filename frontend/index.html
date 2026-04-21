@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yanti Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo">
+          <div class="navbar__logo-icon">🕌</div>
+          <span class="navbar__logo-text">Yanti Store</span>
+        </a>
+        <ul class="navbar__links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="shop.html?type=fashion">Fashion</a></li>
+          <li><a href="shop.html?type=beauty">Kosmetik</a></li>
+          <li><a href="#tentang">Tentang</a></li>
+        </ul>
+        <div class="navbar__right">
+          <a href="shop.html" class="search-pill" title="Cari produk">
+            🔍 <span>Cari produk...</span>
+          </a>
+          <button
+            class="wishlist-nav-btn"
+            onclick="WishlistView.open()"
+            aria-label="Wishlist"
+          >
+            ♡
+            <span class="wishlist-nav-badge hidden" id="wishlist-count">0</span>
+          </button>
+          <button
+            class="cart-btn"
+            onclick="CartView.open()"
+            aria-label="Keranjang"
+          >
+            🛍️
+            <span class="cart-badge hidden" id="cart-count">0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="fade-in-up">
+          <p class="hero__label">✨ Koleksi Terbaru 2025</p>
+          <h1 class="hero__title">
+            Fashion & Beauty<br /><span>Terbaik Untukmu</span>
+          </h1>
+          <p class="hero__desc">
+            Koleksi muslim fashion Rabbani & Nibras, plus kosmetik halal Wardah
+            pilihan. Semua tersedia di Yanti Store, Lampung.
+          </p>
+          <div class="hero__actions">
+            <a href="shop.html" class="btn-primary">Belanja Sekarang</a>
+            <a href="#featured" class="btn-outline">Lihat Koleksi</a>
+          </div>
+        </div>
+        <div class="hero__cards fade-in-up" style="animation-delay: 0.2s">
+          <div class="hero__cards-grid">
+            <div class="hero__card">
+              <span class="hero__card-emoji">👗</span>
+              <p class="hero__card-name">Muslim Fashion</p>
+              <p class="hero__card-count" id="hero-count-fashion">...</p>
+            </div>
+            <div class="hero__card">
+              <span class="hero__card-emoji">💄</span>
+              <p class="hero__card-name">Kosmetik Halal</p>
+              <p class="hero__card-count" id="hero-count-beauty">...</p>
+            </div>
+            <div class="hero__card">
+              <span class="hero__card-emoji">🏷️</span>
+              <p class="hero__card-name">Brand Pilihan</p>
+              <p class="hero__card-count">Rabbani · Nibras · Wardah</p>
+            </div>
+            <div class="hero__card">
+              <span class="hero__card-emoji">🔥</span>
+              <p class="hero__card-name">Promo Aktif</p>
+              <p class="hero__card-count" id="hero-count-promo">...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED: FASHION -->
+    <section id="featured" class="featured-section">
+      <div class="featured-section__inner">
+        <div class="featured-section__header">
+          <div class="featured-section__title-group">
+            <h2 class="featured-section__title">👗 Muslim Fashion</h2>
+            <span class="featured-section__tag featured-section__tag--fashion"
+              >Rabbani · Nibras</span
+            >
+          </div>
+          <a href="shop.html?type=fashion" class="featured-section__see-all"
+            >Lihat Semua →</a
+          >
+        </div>
+        <div class="product-grid" id="fashion-grid"></div>
+      </div>
+    </section>
+
+    <div style="height: 1px; background: #f0e8f5; margin: 0 24px"></div>
+
+    <!-- FEATURED: BEAUTY -->
+    <section class="featured-section">
+      <div class="featured-section__inner">
+        <div class="featured-section__header">
+          <div class="featured-section__title-group">
+            <h2 class="featured-section__title">💄 Kosmetik Halal</h2>
+            <span class="featured-section__tag featured-section__tag--beauty"
+              >Wardah</span
+            >
+          </div>
+          <a href="shop.html?type=beauty" class="featured-section__see-all"
+            >Lihat Semua →</a
+          >
+        </div>
+        <div class="product-grid" id="beauty-grid"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="tentang" class="about-section">
+      <div class="about-section__inner">
+        <div class="section-divider"></div>
+        <h2 class="about-section__title">Tentang Kami</h2>
+        <p class="about-section__text">
+          Yanti Store berlokasi di Lampung. Kami menghadirkan koleksi
+          <strong>Rabbani</strong> dan <strong>Nibras</strong> untuk fashion
+          muslim, serta <strong>Wardah</strong> untuk kosmetik halal pilihan.
+          Berbelanja mudah, langsung pesan via WhatsApp, dan kami antar ke
+          rumahmu.
+        </p>
+        <div class="stats-grid">
+          <div>
+            <p class="stat__number" id="stat-total">32+</p>
+            <p class="stat__label">Produk Pilihan</p>
+          </div>
+          <div>
+            <p class="stat__number">500+</p>
+            <p class="stat__label">Pelanggan Puas</p>
+          </div>
+          <div>
+            <p class="stat__number">3+</p>
+            <p class="stat__label">Tahun Berdiri</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p class="footer__brand">🕌 Yanti Store</p>
+      <p>
+        Lampung, Indonesia &nbsp;|&nbsp; WA:
+        <a class="footer__link" href="https://wa.me/6281234567890"
+          >0812-XXXX-XXXX</a
+        >
+      </p>
+      <p class="footer__copy">© 2025 Yanti Store. Semua hak dilindungi.</p>
+    </footer>
+
+    <!-- CART -->
+    <div
+      class="cart-overlay"
+      id="cart-overlay"
+      onclick="CartView.close()"
+    ></div>
+    <aside class="cart-sidebar" id="cart-sidebar">
+      <div class="cart-sidebar__header">
+        <h3 class="cart-sidebar__title">🛍️ Keranjang</h3>
+        <button class="cart-sidebar__close" onclick="CartView.close()">
+          ✕
+        </button>
+      </div>
+      <div id="cart-actions-bar"></div>
+      <div class="cart-sidebar__body" id="cart-items-list"></div>
+      <div class="cart-sidebar__footer hidden" id="cart-footer">
+        <div class="cart-total-row">
+          <span class="cart-total-label">Total Belanja</span>
+          <span class="cart-total-value" id="cart-total">Rp 0</span>
+        </div>
+        <button
+          class="btn-primary btn-primary--full"
+          onclick="OrderView.open()"
+        >
+          Lanjut Pesan ➜
+        </button>
+      </div>
+    </aside>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div id="product-modal">
+      <div id="product-modal-content"></div>
+    </div>
+
+    <!-- ORDER MODAL -->
+    <div class="modal-overlay" id="order-modal" aria-modal="true" role="dialog">
+      <div class="modal-box">
+        <h3 class="modal-box__title">Detail Pesanan</h3>
+        <p class="modal-box__sub">
+          Isi data untuk konfirmasi pesanan via WhatsApp
+        </p>
+        <div class="order-summary" id="order-summary"></div>
+        <div class="form-group">
+          <label class="form-label" for="order-name">Nama Lengkap</label>
+          <input
+            class="form-input"
+            id="order-name"
+            type="text"
+            placeholder="Contoh: Siti Aminah"
+            autocomplete="name"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="order-wa">Nomor WhatsApp</label>
+          <input
+            class="form-input"
+            id="order-wa"
+            type="tel"
+            placeholder="Contoh: 08123456789"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="15"
+            autocomplete="tel"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="order-address"
+            >Alamat Pengiriman</label
+          >
+          <textarea
+            class="form-input"
+            id="order-address"
+            rows="3"
+            placeholder="Jl. Contoh No.1, Kecamatan, Kota"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="order-note">Catatan (opsional)</label>
+          <textarea
+            class="form-input"
+            id="order-note"
+            rows="2"
+            placeholder="Permintaan khusus..."
+          ></textarea>
+        </div>
+        <div class="modal-actions">
+          <button
+            class="btn-primary btn-primary--green btn-primary--full"
+            onclick="OrderView.submit()"
+          >
+            📲 Pesan via WhatsApp
+          </button>
+          <button class="btn-outline" onclick="OrderView.close()">Batal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIRM MODAL -->
+    <div
+      class="modal-overlay"
+      id="confirm-modal"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-box confirm-box">
+        <div class="confirm-icon">🗑️</div>
+        <h3 class="confirm-title" id="confirm-title">Hapus Item?</h3>
+        <p class="confirm-message" id="confirm-message"></p>
+        <div class="confirm-actions">
+          <button
+            class="btn-danger"
+            id="confirm-btn"
+            onclick="ConfirmService.confirm()"
+          >
+            Hapus
+          </button>
+          <button class="btn-outline" onclick="ConfirmService.cancel()">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div
+      class="modal-overlay"
+      id="success-modal"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-box" id="success-modal-content"></div>
+    </div>
+
+    <!-- WISHLIST SIDEBAR -->
+    <div
+      class="cart-overlay"
+      id="wishlist-overlay"
+      onclick="WishlistView.close()"
+    ></div>
+    <aside class="cart-sidebar" id="wishlist-sidebar">
+      <div class="cart-sidebar__header">
+        <h3 class="cart-sidebar__title">❤️ Wishlist</h3>
+        <button class="cart-sidebar__close" onclick="WishlistView.close()">
+          ✕
+        </button>
+      </div>
+      <div class="cart-sidebar__body" id="wishlist-items-list"></div>
+    </aside>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+      <span id="toast-msg"></span>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <button
+      class="back-to-top"
+      id="back-to-top"
+      onclick="smoothScrollTop()"
+      aria-label="Kembali ke atas"
+    >
+      ↑
+    </button>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <a href="index.html" class="bottom-nav__item active">
+        <span class="bottom-nav__icon">🏠</span>
+        <span class="bottom-nav__label">Beranda</span>
+      </a>
+      <a href="shop.html?type=fashion" class="bottom-nav__item">
+        <span class="bottom-nav__icon">👗</span>
+        <span class="bottom-nav__label">Fashion</span>
+      </a>
+      <a href="shop.html?type=beauty" class="bottom-nav__item">
+        <span class="bottom-nav__icon">💄</span>
+        <span class="bottom-nav__label">Kosmetik</span>
+      </a>
+      <button class="bottom-nav__item" onclick="WishlistView.open()">
+        <span class="bottom-nav__icon bottom-nav__icon--wish">
+          ♡<span class="bottom-nav__badge hidden" id="bottom-wishlist-count"
+            >0</span
+          >
+        </span>
+        <span class="bottom-nav__label">Wishlist</span>
+      </button>
+      <button class="bottom-nav__item" onclick="CartView.open()">
+        <span class="bottom-nav__icon bottom-nav__icon--cart">
+          🛍️<span class="bottom-nav__badge hidden" id="bottom-cart-count"
+            >0</span
+          >
+        </span>
+        <span class="bottom-nav__label">Keranjang</span>
+      </button>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="src/config/app.config.js"></script>
+    <script src="src/constants/app.constants.js"></script>
+    <script src="src/models/models.js"></script>
+    <script src="src/repositories/product.repository.js"></script>
+    <script src="src/services/product.service.js"></script>
+    <script src="src/services/cart.service.js"></script>
+    <script src="src/services/order.service.js"></script>
+    <script src="src/services/wishlist.service.js"></script>
+    <script src="src/services/confirm.service.js"></script>
+    <script src="src/utils/ui.utils.js"></script>
+    <script src="src/ui/components/components.js"></script>
+    <script src="src/ui/views/views.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
