@@ -104,73 +104,6 @@ yanti-store/
 
 ---
 
-## 🚀 Cara Menjalankan
-
-### Prerequisites
-- [Go](https://golang.org/dl/) versi 1.21+
-- Browser modern
-- Ekstensi [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) (VS Code)
-
-### 1. Clone repository
-
-```bash
-git clone https://github.com/Satrioz/yanti-store.git
-cd yanti-store
-```
-
-### 2. Jalankan Backend
-
-```bash
-cd backend
-go run cmd/server/main.go
-```
-
-Server berjalan di `http://localhost:8080`
-
-### 3. Jalankan Frontend
-
-Buka VS Code → klik kanan `frontend/index.html` → **Open with Live Server**
-
-Frontend berjalan di `http://127.0.0.1:5500`
-
-### 4. Verifikasi
-
-Buka browser dan akses `http://127.0.0.1:5500` — produk fashion dan kosmetik harus tampil.
-
----
-
-## ⚙️ Konfigurasi
-
-### Ganti Nomor WhatsApp Toko
-Buka `frontend/src/config/app.config.js`:
-```js
-const AppConfig = Object.freeze({
-  STORE_WA: '6281234567890',  // ← ganti dengan nomor WA aktif
-  // ...
-});
-```
-
-### Switch Mock Data ↔ Go Backend
-```js
-const AppConfig = Object.freeze({
-  USE_MOCK_DATA: false,  // true = pakai mock, false = pakai Go API
-  API_BASE_URL:  'http://localhost:8080/api/v1',
-  // ...
-});
-```
-
-### Tambah Produk Baru
-Buka `backend/internal/repository/product_repo.go` dan tambahkan di `seedProducts()`:
-```go
-{
-  ID: 33, Type: "fashion", Category: "wanita", Brand: "rabbani",
-  Price: 150000, Stock: 10, Emoji: "👗", Badge: "Baru",
-  Name: "Nama Produk Baru", Desc: "Deskripsi produk...",
-},
-```
-
----
-
 ## 🗺️ Roadmap
 
 ### v0.2 — Database Integration
@@ -202,10 +135,6 @@ Buka `backend/internal/repository/product_repo.go` dan tambahkan di `seedProduct
 Project ini masih beta. Jika menemukan bug atau punya saran fitur, silakan buat [Issue](https://github.com/Satrioz/yanti-store/issues) atau [Pull Request](https://github.com/Satrioz/yanti-store/pulls).
 
 ---
-
-## 📄 Lisensi
-
-MIT License — bebas digunakan dan dimodifikasi.
 
 ---
 
