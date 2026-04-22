@@ -59,7 +59,7 @@
     <div class="shop-header">
       <div class="shop-header__inner">
         <h1 class="shop-header__title" id="shop-page-title">Semua Produk</h1>
-        <span class="shop-header__count" id="result-count"></span>
+        <span class="shop-header__count" id="shop-result-count"></span>
       </div>
     </div>
 
@@ -93,14 +93,20 @@
     <!-- FILTER ROW -->
     <div class="shop-filter-row">
       <div class="shop-filter-row__inner">
+        <!-- Kategori -->
         <div>
           <p class="shop-filter-label">📂 Kategori</p>
           <div class="pills" id="category-pills"></div>
         </div>
+
+        <!-- Brand -->
         <div>
           <p class="shop-filter-label">🏷️ Brand</p>
           <div class="pills" id="brand-pills"></div>
         </div>
+
+        <!-- Price range slider -->
+        <div id="price-range-wrap"></div>
       </div>
     </div>
 
@@ -109,9 +115,10 @@
       <div class="sort-filter-bar__inner">
         <div class="filter-bar">
           <span class="filter-bar__label">Filter:</span>
-          <span class="filter-bar__active" id="active-filter-label"
-            >Semua produk</span
-          >
+          <div
+            id="active-filter-tags"
+            style="display: flex; gap: 6px; flex-wrap: wrap"
+          ></div>
           <button class="btn-reset" onclick="ShopView.resetFilter()">
             ✕ Reset
           </button>
@@ -119,20 +126,13 @@
         <div
           style="display: flex; align-items: center; gap: 8px; flex-shrink: 0"
         >
-          <span
-            style="
-              font-size: 0.78rem;
-              color: var(--mid);
-              font-weight: 500;
-              white-space: nowrap;
-            "
-            >Urutkan:</span
-          >
+          <span class="filter-bar__count" id="result-count"></span>
           <select
             class="sort-select"
             id="sort-select"
             onchange="FilterView.setSort(this.value)"
           ></select>
+          <div id="view-toggle-wrap"></div>
         </div>
       </div>
     </div>

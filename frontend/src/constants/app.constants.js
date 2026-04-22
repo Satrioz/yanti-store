@@ -99,10 +99,22 @@ const SARONG_EMOJIS = Object.freeze(["🧦"]);
 
 // ── Default filter state ──────────────────────────────────────────────────────
 
+/** Harga min & max untuk range slider */
+const PRICE_RANGE = Object.freeze({
+  min: 0,
+  max: 350000,
+  step: 5000,
+});
+
+/** Default filter tambah priceMin & priceMax */
+// Update DEFAULT_FILTER yang sudah ada menjadi:
 const DEFAULT_FILTER = Object.freeze({
   category: "semua",
   brand: "semua",
   type: "semua",
   sort: "default",
   query: "",
+  priceMin: 0,
+  priceMax: 350000,
+  view: "grid", // 'grid' | 'list'
 });

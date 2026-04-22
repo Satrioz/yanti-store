@@ -31,13 +31,19 @@ const ProductService = (() => {
           ? true
           : p.brand === filter.brand;
 
+      const priceMatch =
+        p.price >= (filter.priceMin ?? 0) &&
+        p.price <= (filter.priceMax ?? 999999999);
+
       const searchMatch =
         !q ||
         p.name.toLowerCase().includes(q) ||
         p.desc.toLowerCase().includes(q) ||
         p.brand.toLowerCase().includes(q);
 
-      return typeMatch && categoryMatch && brandMatch && searchMatch;
+      return (
+        typeMatch && categoryMatch && brandMatch && priceMatch && searchMatch
+      );
     });
 
     const sorted = [...results];

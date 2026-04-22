@@ -70,6 +70,15 @@ const ShopView = (() => {
     FilterView.setType(type);
     FilterView.reset();
     FilterView.render(cats, brnds);
+
+    // Render price slider
+    UIUtils.setHtml(
+      "price-range-wrap",
+      Components.priceRangeSlider(PRICE_RANGE.min, PRICE_RANGE.max),
+    );
+
+    // Render view toggle
+    UIUtils.setHtml("view-toggle-wrap", Components.viewToggle("grid"));
   }
 
   function resetFilter() {

@@ -310,6 +310,144 @@ const Components = (() => {
       </button>`;
   }
 
+  // ── Price Range Slider ────────────────────────────────────────────────────
+
+  function priceRangeSlider(priceMin, priceMax) {
+    const min = PRICE_RANGE.min;
+    const max = PRICE_RANGE.max;
+    const pct1 = ((priceMin - min) / (max - min)) * 100;
+    const pct2 = ((priceMax - min) / (max - min)) * 100;
+
+    return `
+      <div class="price-filter">
+        <div class="price-filter__header">
+          <span class="price-filter__label">💰 Rentang Harga</span>
+          <div class="price-filter__values">
+            <span class="price-filter__val" id="price-min-label">${formatRp(priceMin)}</span>
+            <span class="price-filter__sep">—</span>
+            <span class="price-filter__val" id="price-max-label">${formatRp(priceMax)}</span>
+          </div>
+        </div>
+        <div class="price-slider-wrap">
+          <div class="price-slider-track">
+            <div class="price-slider-fill" id="price-slider-fill"
+              style="left:${pct1}%;right:${100 - pct2}%"></div>
+          </div>
+          <input type="range" class="price-range-input price-range-input--min"
+            id="price-range-min" min="${min}" max="${max}" step="${PRICE_RANGE.step}"
+            value="${priceMin}" oninput="FilterView.setPriceMin(this.value)" />
+          <input type="range" class="price-range-input price-range-input--max"
+            id="price-range-max" min="${min}" max="${max}" step="${PRICE_RANGE.step}"
+            value="${priceMax}" oninput="FilterView.setPriceMax(this.value)" />
+        </div>
+        <div class="price-filter__presets">
+          <button class="price-preset" onclick="FilterView.setPricePreset(0,100000)">< 100rb</button>
+          <button class="price-preset" onclick="FilterView.setPricePreset(100000,200000)">100–200rb</button>
+          <button class="price-preset" onclick="FilterView.setPricePreset(200000,350000)">> 200rb</button>
+        </div>
+      </div>`;
+  }
+
+  // ── Active Filter Tags ────────────────────────────────────────────────────
+
+  function activeFilterTags(filter) {
+    const tags = [];
+    const catLabel = [...FASHION_CATEGORIES, ...BEAUTY_CATEGORIES].find(
+      (c) => c.id === filter.category && c.id !== "semua",
+    )?.label;
+    const brandLabel = BRANDS.find(
+      (b) => b.id === filter.brand && b.id !== "semua",
+    )?.label;
+    const isPriceFiltered =
+      filter.priceMin > PRICE_RANGE.min || filter.priceMax < PRICE_RANGE.max;
+
+    if (catLabel)
+      tags.push(
+        `<span class="active-tag">${catLabel} <button onclick="FilterView.setCategory('semua',null)">✕</button></span>`,
+      );
+    if (brandLabel)
+      tags.push(
+        `<span class="active-tag">${brandLabel} <button onclick="FilterView.setBrand('semua',null)">✕</button></span>`,
+      );
+    if (isPriceFiltered)
+      tags.push(
+        `<span class="active-tag">${formatRp(filter.priceMin)}–${formatRp(filter.priceMax)} <button onclick="FilterView.resetPrice()">✕</button></span>`,
+      );
+    if (filter.query)
+      tags.push(
+        `<span class="active-tag">🔍 "${filter.query}" <button onclick="FilterView.setQuery('')">✕</button></span>`,
+      );
+
+    return tags.join("");
+  }
+
+  // ── View Toggle ───────────────────────────────────────────────────────────
+
+  function viewToggle(activeView) {
+    return `
+      <div class="view-toggle">
+        <button class="view-btn ${activeView === "grid" ? "active" : ""}"
+          onclick="FilterView.setView('grid')" title="Tampilan Grid" aria-label="Grid view">
+          <svg width="14" height="14" viewBox="0 0 14 14">
+            <rect x="0" y="0" width="6" height="6" rx="1.5" fill="currentColor"/>
+            <rect x="8" y="0" width="6" height="6" rx="1.5" fill="currentColor"/>
+            <rect x="0" y="8" width="6" height="6" rx="1.5" fill="currentColor"/>
+            <rect x="8" y="8" width="6" height="6" rx="1.5" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="view-btn ${activeView === "list" ? "active" : ""}"
+          onclick="FilterView.setView('list')" title="Tampilan List" aria-label="List view">
+          <svg width="14" height="14" viewBox="0 0 14 14">
+            <rect x="0" y="1"   width="14" height="2.5" rx="1.25" fill="currentColor"/>
+            <rect x="0" y="5.5" width="14" height="2.5" rx="1.25" fill="currentColor"/>
+            <rect x="0" y="10"  width="14" height="2.5" rx="1.25" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>`;
+  }
+
+  // ── Product List Item (for list view) ────────────────────────────────────
+
+  function productListItem(product) {
+    const brand = ProductService.getBrandMeta(product);
+    const showBrand = brand.color && product.brand !== "lainnya";
+    const isWish = WishlistService.has(product.id);
+
+    const stockEl =
+      product.stock === 0
+        ? `<span class="list-stock list-stock--empty">❌ Habis</span>`
+        : product.stock <= 5
+          ? `<span class="list-stock list-stock--low">⚠️ Sisa ${product.stock}</span>`
+          : `<span class="list-stock list-stock--ok">✅ Stok ${product.stock}</span>`;
+
+    return `
+      <div class="product-list-item fade-in-up" onclick="ProductModalView.open(${product.id})">
+        <div class="product-list-item__img ${product.type === "beauty" ? "product-card__img--beauty" : ""}">
+          ${product.emoji}
+        </div>
+        <div class="product-list-item__body">
+          <div class="product-list-item__meta">
+            ${showBrand ? `<span class="product-card__brand" style="color:${brand.color};background:${brand.color}18">${brand.label}</span>` : ""}
+            ${product.badge ? `<span class="product-card__badge" style="position:static;display:inline-block">${product.badge}</span>` : ""}
+            ${stockEl}
+          </div>
+          <h3 class="product-list-item__name">${product.name}</h3>
+          <p class="product-list-item__desc">${product.desc}</p>
+          <p class="product-list-item__price">${formatRp(product.price)}</p>
+        </div>
+        <div class="product-list-item__actions" onclick="event.stopPropagation()">
+          <button class="btn-primary" style="font-size:.8rem;padding:9px 14px;border-radius:var(--r-md)"
+            onclick="ProductModalView.open(${product.id})">
+            🛒 Keranjang
+          </button>
+          <button class="btn-wishlist-pill ${isWish ? "btn-wishlist-pill--active" : ""}"
+            style="padding:8px 14px;font-size:.8rem"
+            onclick="WishlistView.toggle(${product.id})">
+            ${isWish ? "❤️" : "🤍"}
+          </button>
+        </div>
+      </div>`;
+  }
   return Object.freeze({
     categoryPills,
     brandPills,
@@ -324,5 +462,9 @@ const Components = (() => {
     wishlistEmpty,
     wishlistItem,
     skeletonGrid,
+    priceRangeSlider,
+    activeFilterTags,
+    viewToggle,
+    productListItem, // ← tambah
   });
 })();

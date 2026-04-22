@@ -85,6 +85,73 @@ const FilterView = (() => {
     return { ..._filter };
   }
 
+  // ── Price filter ──────────────────────────────────────────────────────────
+
+  function setPriceMin(val) {
+    const min = parseInt(val);
+    if (min >= _filter.priceMax) return;
+    _filter.priceMin = min;
+    _updatePriceUI();
+    ProductGridView.render(_filter);
+  }
+
+  function setPriceMax(val) {
+    const max = parseInt(val);
+    if (max <= _filter.priceMin) return;
+    _filter.priceMax = max;
+    _updatePriceUI();
+    ProductGridView.render(_filter);
+  }
+
+  function setPricePreset(min, max) {
+    _filter.priceMin = min;
+    _filter.priceMax = max;
+    // Update slider inputs
+    const minEl = document.getElementById("price-range-min");
+    const maxEl = document.getElementById("price-range-max");
+    if (minEl) minEl.value = min;
+    if (maxEl) maxEl.value = max;
+    _updatePriceUI();
+    ProductGridView.render(_filter);
+  }
+
+  function resetPrice() {
+    _filter.priceMin = PRICE_RANGE.min;
+    _filter.priceMax = PRICE_RANGE.max;
+    const minEl = document.getElementById("price-range-min");
+    const maxEl = document.getElementById("price-range-max");
+    if (minEl) minEl.value = PRICE_RANGE.min;
+    if (maxEl) maxEl.value = PRICE_RANGE.max;
+    _updatePriceUI();
+    ProductGridView.render(_filter);
+  }
+
+  function _updatePriceUI() {
+    const min = PRICE_RANGE.min;
+    const max = PRICE_RANGE.max;
+    const pct1 = ((_filter.priceMin - min) / (max - min)) * 100;
+    const pct2 = ((_filter.priceMax - min) / (max - min)) * 100;
+
+    UIUtils.setText("price-min-label", formatRp(_filter.priceMin));
+    UIUtils.setText("price-max-label", formatRp(_filter.priceMax));
+
+    const fill = document.getElementById("price-slider-fill");
+    if (fill) {
+      fill.style.left = pct1 + "%";
+      fill.style.right = 100 - pct2 + "%";
+    }
+
+    // Update active tags
+    UIUtils.setHtml("active-filter-tags", Components.activeFilterTags(_filter));
+  }
+
+  // ── View toggle ───────────────────────────────────────────────────────────
+
+  function setView(view) {
+    _filter.view = view;
+    UIUtils.setHtml("view-toggle-wrap", Components.viewToggle(view));
+    ProductGridView.render(_filter);
+  }
   return Object.freeze({
     render,
     setCategory,
@@ -94,6 +161,11 @@ const FilterView = (() => {
     setType,
     reset,
     getCurrentFilter,
+    setPriceMin,
+    setPriceMax,
+    setPricePreset,
+    resetPrice,
+    setView, // ← tambah
   });
 })();
 
@@ -105,13 +177,27 @@ const ProductGridView = (() => {
     const grid = document.getElementById("product-grid");
     const empty = document.getElementById("empty-state");
     const count = document.getElementById("result-count");
+
     if (count) count.textContent = `${filtered.length} produk`;
+
+    // Update active tags
+    UIUtils.setHtml("active-filter-tags", Components.activeFilterTags(filter));
+
     if (filtered.length === 0) {
       if (grid) grid.innerHTML = "";
+      if (grid) grid.className = "product-grid";
       empty?.classList.remove("hidden");
-    } else {
-      empty?.classList.add("hidden");
-      if (grid) grid.innerHTML = filtered.map(Components.productCard).join("");
+      return;
+    }
+    empty?.classList.add("hidden");
+
+    // Switch between grid and list view
+    const isGrid = !filter.view || filter.view === "grid";
+    if (grid) {
+      grid.className = isGrid ? "product-grid" : "product-list-view";
+      grid.innerHTML = isGrid
+        ? filtered.map(Components.productCard).join("")
+        : filtered.map(Components.productListItem).join("");
     }
   }
   return Object.freeze({ render });
